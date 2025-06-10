@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Get Recommendations</h2>
+
+  {% if error %}
+    <div class="flash danger">{{ error }}</div>
+  {% endif %}
+
+  {# ———————————————————————————————— #}
+  {# 1) Nếu là POST (request.form), hiển thị form #}
+  {% if request.method == 'POST' %}
+    <form method="POST" action="{{ url_for('recommend') }}">
+      <div class="form-group">
+        <label for="base_movie_id">Chọn phim gốc (nếu muốn content-based):</label>
+        <select id="base_movie_id" name="base_movie_id">
+          <option value="">-- Không chọn --</option>
+          {% for movie in movies %}
+            <option value="{{ movie.id }}"
+              {% if request.form.base_movie_id|int == movie.id %}selected{% endif %}>
+              {{ movie.title }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="num">Số lượng gợi ý:</label>
+        <input type="number"
+               id="num"
+               name="num"
+               min="1"
+               max="20"
+               value="{{ request.form.num or 5 }}"
+               required>
+      </div>
+      <button type="submit" class="btn">Get Recommendations</button>
+    </form>
+  {% endif %}
+
+  {# 2) Nếu là GET với tmdb_id, show thông báo phim đã click từ Search #}
+  {% if request.args.tmdb_id %}
+    <div class="flash info">
+      Bạn vừa chọn phim TMDB ID <strong>{{ request.args.tmdb_id }}</strong>,
+      đang lấy gợi ý online…
+    </div>
+  {% endif %}
+
+
+  {# ———————————————————————————————— #}
+  {# 3) Hiển thị kết quả trong recs, bất kể GET hay POST #}
+  {% if recs %}
+    <div class="recommend-section">
+
+      {# 3a) Nhóm TMDB Online nếu có #}
+      {% if recs.tmdb_online %}
+        <h3>TMDB Online Recommendations</h3>
+        <div class="movie-grid">
+          {% for m in recs.tmdb_online %}
+            <div class="movie-card">
+              {% if m.poster_url %}
+                <img src="{{ m.poster_url }}" alt="Poster {{ m.title }}" class="poster-img">
+              {% else %}
+                <div class="movie-poster-placeholder">No Poster</div>
+              {% endif %}
+              <div class="movie-info">
+                <h4>{{ m.title }}{% if m.year %} ({{ m.year }}){% endif %}</h4>
+                <div>Rating: {{ "%.1f"|format(m.rating|float) }}/10</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <hr>
+      {% endif %}
+
+      {# 3b) Các nhóm local/hybrid #}
+      {% for rec_type, movies in recs.items() if rec_type != 'tmdb_online' %}
+        <h3>{{ rec_type.replace('_',' ').title() }} Recommendations</h3>
+        {% if movies %}
+          <div class="movie-grid">
+            {% for movie in movies %}
+              <div class="movie-card">
+                {% if movie.poster_url %}
+                  <img src="{{ movie.poster_url }}" alt="Poster {{ movie.title }}" class="poster-img">
+                {% else %}
+                  <div class="movie-poster-placeholder">No Poster</div>
+                {% endif %}
+                <div class="movie-info">
+                  <h4>{{ movie.title }}{% if movie.year %} ({{ movie.year }}){% endif %}</h4>
+                  <div>Rating: {{ "%.1f"|format(movie.rating|float) }}/10</div>
+                  {% if movie.similarity_score %}
+                    <div>Similarity: {{ "%.2f"|format(movie.similarity_score|float) }}</div>
+                  {% endif %}
+                  {% if movie.predicted_rating %}
+                    <div>Predicted: {{ "%.2f"|format(movie.predicted_rating|float) }}</div>
+                  {% endif %}
+                  {% if movie.hybrid_score %}
+                    <div>Hybrid: {{ "%.2f"|format(movie.hybrid_score|float) }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Không có gợi ý trong phần này.</p>
+        {% endif %}
+        <hr>
+      {% endfor %}
+
+    </div>
+  {% endif %}
+{% endblock %}

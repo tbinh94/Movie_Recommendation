@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Hero/Banner Section -->
+    <div class="hero">
+        <div class="hero-overlay">
+            <h2>Khám Phá Thế Giới Điện Ảnh</h2>
+            <p>Chào mừng bạn đến với hệ thống gợi ý phim. Hãy bắt đầu hành trình tìm kiếm tác phẩm yêu thích ngay thôi!</p>
+            <a href="{{ url_for('search') }}" class="btn-hero">Tìm Kiếm Ngay</a>
+        </div>
+    </div>
+    {% if session.get('username') %}
+        <div class="welcome-user">
+            <img src="{{ session.avatar_url or 'https://api.dicebear.com/7.x/avataaars/svg?seed=default' }}"
+                                    alt="{{ session.username }}"
+                                    class="user-avatar"
+                                    onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=default'"
+                                    style="width:32px;height:32px;object-fit:cover;border-radius:50%;">
+            <span>Welcome back, {{ session.username }}!</span>
+        </div>
+    {% endif %}
+    <!-- Featured Movies Section -->
+    <section class="featured-section">
+        <h3>Featured Movies</h3>
+        {% if featured_movies %}
+        <div class="movie-grid">
+            {% for movie in featured_movies %}
+            <div class="movie-card">
+                <!-- Nếu có poster_url -->
+                {% if movie.poster_url %}
+                    <img src="{{ movie.poster_url }}" alt="Poster {{ movie['title'] }}" class="poster-img">
+                {% else %}
+                    <div class="movie-poster-placeholder">
+                        <span>No Poster</span>
+                    </div>
+                {% endif %}
+
+                <div class="movie-info">
+                    <h4>{{ movie['title'] }}</h4>
+                    {% if movie['year'] %}
+                        <span class="movie-year">({{ movie['year'] }})</span>
+                    {% endif %}
+                    <div class="movie-rating">Rating: {{ "%.1f"|format(movie['rating']|float) }}/10</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>Chưa có phim nổi bật nào.</p>
+        {% endif %}
+    </section>
+{% endblock %}
+
+
