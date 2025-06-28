@@ -6,12 +6,12 @@ Here’s a polished and impressive `README.md` tailored for your GitHub repo, ba
 
 An interactive chatbot powered by TMDB that recommends similar movies based on user input — built with Flask and a simple GPT-style interface.
 
-<p align="center">
+
 ![image](https://github.com/user-attachments/assets/67c9c0e1-33e9-4616-9571-04858a802eb4)
 ![image](https://github.com/user-attachments/assets/33da1f07-f090-4964-9680-4940293d0527)
 ![image](https://github.com/user-attachments/assets/076362c9-778b-4871-8920-a859df5ae5a1)
 ![image](https://github.com/user-attachments/assets/52cce7be-d120-415e-a3fb-6e18563755df)
-</p>
+
 
 ## 🚀 Features
 
