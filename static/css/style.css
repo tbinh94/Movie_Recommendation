@@ -54,6 +54,9 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    /* Prevent zoom on mobile */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -64,6 +67,9 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
+    /* Ensure proper scaling */
+    width: 100%;
+    max-width: 100vw;
 }
 
 /* Animated background */
@@ -117,9 +123,11 @@ p {
 
 /* ===== Container ===== */
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 var(--space-lg);
+    box-sizing: border-box;
 }
 
 /* ===== Header & Navigation ===== */
@@ -455,9 +463,10 @@ input::placeholder {
 /* ===== Movie Components ===== */
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: var(--space-lg);
     margin-top: var(--space-xl);
+    width: 100%;
 }
 
 .movie-card {
@@ -701,6 +710,37 @@ li:hover {
 }
 
 /* ===== Responsive Design ===== */
+@media (max-width: 1440px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    .main-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: var(--space-md);
+    }
+}
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -714,7 +754,7 @@ li:hover {
     }
     
     .main-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         padding: var(--space-md) 0;
     }
     
@@ -723,7 +763,7 @@ li:hover {
     }
     
     .movie-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: var(--space-md);
     }
     
@@ -747,6 +787,7 @@ li:hover {
     
     .container {
         padding: 0 var(--space-md);
+        max-width: 100%;
     }
 }
 
@@ -756,19 +797,24 @@ li:hover {
     }
     
     .hero {
-        height: 300px;
+        height: 250px;
     }
     
     .hero-overlay h2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
     
     .hero-overlay p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .movie-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: var(--space-sm);
+    }
+    
+    .container {
+        padding: 0 var(--space-sm);
     }
 }
 
