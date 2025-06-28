@@ -2,10 +2,8 @@ Here’s a polished and impressive `README.md` tailored for your GitHub repo, ba
 
 ---
 
-# 🎬 Movie Recommender Chatbot
-
-An interactive chatbot powered by TMDB that recommends similar movies based on user input — built with Flask and a simple GPT-style interface.
-
+# 🎬 Movie Recommendation System
+A system features the lastest and most popular movies in real-time with a simple chatbot that could find similar movies based on your input!
 
 ![image](https://github.com/user-attachments/assets/67c9c0e1-33e9-4616-9571-04858a802eb4)
 ![image](https://github.com/user-attachments/assets/33da1f07-f090-4964-9680-4940293d0527)
