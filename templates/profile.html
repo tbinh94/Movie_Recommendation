@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Trang Cá Nhân{% endblock %}
+
+{% block content %}
+  <h3>Thông Tin Cá Nhân</h3>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Ngày tạo:</strong> {{ user.created_at }}</p>
+
+  <hr>
+
+  <h4>Danh Sách Đánh Giá</h4>
+  {% if ratings %}
+    <table>
+      <thead>
+        <tr>
+          <th>Poster</th>
+          <th>Tiêu đề phim</th>
+          <th>Điểm đánh giá</th>
+          <th>Thời gian</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in ratings %}
+        <tr>
+          <td>
+            {% set poster_path = url_for('static', filename='images/posters/' ~ row['movie_id'] ~ '.jpg') %}
+            <img src="{{ poster_path }}" alt="{{ row['title'] }}" width="80">
+          </td>
+          <td>{{ row['title'] }}</td>
+          <td>{{ row['rating'] }}</td>
+          <td>{{ row['timestamp'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Bạn chưa đánh giá phim nào.</p>
+  {% endif %}
+{% endblock %}

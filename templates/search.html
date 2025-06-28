@@ -1,0 +1,55 @@
+{# templates/search.html #}
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Search Movies</h2>
+  <form method="GET" action="{{ url_for('search') }}">
+  <div class="form-group">
+    <label for="q">Keyword:</label>
+    <input type="text" id="q" name="q"
+           placeholder="Enter movie title or keyword..."
+           required value="{{ query }}">
+  </div>
+  <button type="submit" class="btn">Search</button>
+</form>
+
+
+  {% if results is defined %}
+    <h3>Results for “{{ query }}”</h3>
+    {% if results %}
+      <div class="movie-grid">
+        {% for movie in results %}
+          <div class="movie-card">
+            {# 1) Bọc poster trong link sang /recommend?tmdb_id=… #}
+              {% if movie.poster_url %}
+                <img src="{{ movie.poster_url }}"
+                     alt="Poster {{ movie.title }}"
+                     class="poster-img">
+              {% else %}
+                <div class="movie-poster-placeholder">No Poster</div>
+              {% endif %}
+
+            <div class="movie-info">
+              {# 2) Bọc luôn tiêu đề trong link #}
+              <h4 class="title">
+                  {{ movie.title }}
+                  {% if movie.year and movie.year!='N/A' %} ({{ movie.year }}){% endif %}
+              </h4>
+              <div class="meta">
+                Rating: {{ "%.1f"|format(movie.rating|float) }}/10
+              </div>
+              <div class="description">
+                {{ movie.description or 'Not available' }}
+              </div>
+              <div class="footer">
+                TMDB ID: {{ movie.id }} | Source: {{ movie.source }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No movies found matching your criteria.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}

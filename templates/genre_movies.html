@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Genre: {{ genre_name }}</h2>
+  <div class="movie-grid">
+    {% for m in movies %}
+      <div class="movie-card">
+        {% if m.poster_url %}
+          <img src="{{ m.poster_url }}" class="poster-img">
+        {% else %}
+          <div class="movie-poster-placeholder">No Poster</div>
+        {% endif %}
+        <div class="movie-info">
+          <h4>{{ m.title }}{% if m.year %} ({{ m.year }}){% endif %}</h4>
+          <div>Rating: {{ "%.1f"|format(m.rating|float) }}/10</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

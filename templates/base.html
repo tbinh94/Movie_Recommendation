@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Movie Recommendation System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+      <link rel="icon" type="image/png" href="static\images\tv.png">
+
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+    <h1 class="main-title">🎬 Movie Recommendation System</h1>
+    
+    <nav class="navbar">
+    <div class="nav-left">
+        <a href="{{ url_for('index') }}">🏠 Home</a>
+        <a href="{{ url_for('search') }}">🔍 Search</a>
+        <a class="nav-link" href="{{ url_for('chatbot') }}">🤖 CineBot</a>
+
+        <div class="dropdown">
+        <button class="dropbtn">🍿 Browse Genres ▾</button>
+        <div class="dropdown-content">
+            {% for g in all_genres %}
+            <a href="{{ url_for('genre_movies', genre_id=g.id) }}">{{ g.name }}</a>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+    <div class="nav-right">
+        {% if session.username %}
+        <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+        <a href="{{ url_for('register') }}" class="btn-register">Register</a>
+        {% endif %}
+    </div>
+    </nav>
+
+</div>
+    </header>
+
+    <main class="content">
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Movie Recommendation System. Built with Flask & TMDB API.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for improved dropdown behavior -->
+    <script>
+        // Đảm bảo dropdown hoạt động trên mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdown = document.querySelector('.dropdown');
+            const dropbtn = document.querySelector('.dropbtn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            
+            if (dropbtn && dropdownContent) {
+                // Toggle dropdown on click (cho mobile)
+                dropbtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownContent.style.display = 
+                        dropdownContent.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Đóng dropdown khi click ra ngoài
+                document.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdownContent.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
