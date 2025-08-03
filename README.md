@@ -1,6 +1,4 @@
-Here’s a polished and impressive `README.md` tailored for your GitHub repo, based on your chatbot UI and movie recommendation backend:
 
----
 
 # 🎬 Movie Recommendation System
 A system features the lastest and most popular movies in real-time with a simple chatbot that could find similar movies based on your input!
